@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: vP8J/mGjIbF+TrwPwuTnlTKvJLdWUSDEb44fbo8JuN9iMlqKNxaIcRB6hvRdvADPvqOlJNPlEttpWbzzX+7LWH+KYg2acdoBrLKpAgo7lw3Q7dfIA6FOgYFANfq44INAgpxSfidCD/clFHHzKzV03ZJ5BzwMgrs8zP0Cl38e5wUXIOv4VyZKHBzzMChKEuy28ML4XKGljgv7IlpX3SPxrUyXv3cxgmQzgz7lBj7L/ZOT8sjij7qnMrGMzGERBjzC0G+A8eLdRYKP4M45lMYMF2TMzevV1hC6Ho0TYpLsL86E/zdTxsnVksydvrhQn+CeN9k1WqU0w2m7o+F4ELmigUPLztjM02vZUitpIroRiomz4fcJJEVsN5Q/sRd1frcnkcECoPdOczwGyy0QlpqhjbXHTuFCWwsJhzqT3X3npTYitQzKzcz6kpTq+h1myTYJApdMjyyO7wHh6YV9vU2zPu0u+fHq+sNE8+UxwB32knDBnrtWrUCKJRU4/B5Xyq3Pxp4b/Ob4iGCqEJrqBVLLFgNO6FzLW+VSbXNlqHUARSTE1RZMeZm4T6rLOKoea8METS4OVZ1VLEhiLcZA+6LhxnvYlQRCnpjegZ+D9XJZPv4z/njaFCfmHUDboWlj20rIyL4hckkB810aWn97nLRVSyLwbrESils+n7qmXepEyWE=
+  app: blooming-dusk-15135
+  on:
+    repo: LorenzoBorje/drum-machine-v2
