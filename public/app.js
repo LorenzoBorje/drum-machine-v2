@@ -7,21 +7,35 @@ let currentlyPlaying;
 
 const SAVE = {}
 
+const testSAVE = {
+  kick: [false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false],
+  snare: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  hihat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  openhat: [false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false]
+}
+
+function handleLoadButton(saveFile) {
+  for (instrument in saveFile) {
+    saveFile[instrument].forEach((pad, index) => {
+      if (pad) {
+        $(`.row.${instrument} > .pad:eq(${index})`).toggleClass('selected');
+      }
+    });
+  }
+}
+
 function generatePattern() {
   instruments.forEach(instrument => {
     let pattern = [];
     for (let i = 0; i < beatMeasure; i++) {
       pattern.push(false);
     };
-    console.log(pattern);
     SAVE[instrument] = pattern; 
   });
 }
 
-function handleSave() {
+function handleSaveButton() {
   let sequence = generatePattern();
-  console.log(SAVE);
-
 }
 
 function resetSelected() {
@@ -82,7 +96,7 @@ function handleBeatSelection() {
     let currentInstrument = pad.attr('data-key');
     let padClasses = pad.attr('class').split(' ');
     let padIndex = padClasses[1];
-    
+
     pad.toggleClass('selected');
     // chaining buttons heightens pitch, odd side-effect
     // better solutions exist (see: StackOverflow) but for first iteration this is fine
@@ -139,11 +153,12 @@ function composeSequencer(){
 function handleStart() {
     composeSequencer();
     handleLabel();
-    handleTempoSelection();
     handleBeatSelection();
     handlePlayButton();
+    handleTempoSelection();
     handleReset();
-    handleSave();
+    handleSaveButton();
+    handleLoadButton(testSAVE);
 }
 
 $(handleStart);
