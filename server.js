@@ -3,6 +3,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+
 const {DATABASE_URL, PORT} = require('./config');
 
 app.use(express.static('public'));

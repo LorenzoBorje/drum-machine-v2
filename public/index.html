@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Drum Machine v0.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 <body>
-  <p>Hello World</p>
+    <header>
+        <h1>Drum Machine</h1>
+        <button class="playbutton">Play</button>
+        <button class="stopbutton hidden">Stop</button>
+        <button class="resetbutton">Reset</button>
+
+    </header>
+    <main>
+        <!-- <section class="intro">
+            <p>Welcome to Drum Machine v0.1</p>
+            <button class="js-intro button">Let's Go</button>
+        </section> -->
+        <section class="controls hidden">
+
+        </section>
+        <section role="region" class="sequencer">
+        </section>
+    </main>
+    <audio data-key="kick" src="sounds/boom.wav"></audio>
+    <audio data-key="snare" src="sounds/snare.wav"></audio>
+    <audio data-key="openhat" src="sounds/openhat.wav"></audio>
+    <audio data-key="hihat" src="sounds/hihat.wav"></audio>
+    <script src="app.js"></script>
 </body>
 </html>
