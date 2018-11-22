@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 </head>
 <body>
     <header>
@@ -24,8 +21,9 @@
             <p>Welcome to Drum Machine v0.1</p>
             <button class="js-intro button">Let's Go</button>
         </section> -->
-        <section class="controls hidden">
-
+        <section class="controls">
+            <p><span class="tempo"></span>bpm</p>
+            <input type="range" min="30" max="240" id="tempo">
         </section>
         <section role="region" class="sequencer">
         </section>

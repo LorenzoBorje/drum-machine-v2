@@ -25,30 +25,39 @@ header > button {
   top: -5px;
 }
 
+.controls > * {
+  display: inline;
+}
+
+.label {
+  width: 100px;
+  height: 50px;
+  margin-right: 7px;
+  position: relative;
+  top: -19px;
+  border: none;
+}
+
 .pad {
   width: 50px;
   height: 50px;
-  margin-right: 10px;
-  border-radius: 5px;
-  border: 2px solid #960018;
+  margin-right: 5px;
   background-color: #666;
+  border: none;
 }
 
 .pad:focus {
-  outline: 0;
+  background-color: #FFF;
 }
 
 .pad:hover {
   background-color: #CCC;
 }
 
-.selected {
-  background-color: #FFF;
+.divider {
+ margin-right: 10px;
 }
 
-.divider {
-  position: relative;
-  top: -4px;
-  left: -4px;
-  display: inline;
+.selected {
+  background-color: #FFF;
 }
