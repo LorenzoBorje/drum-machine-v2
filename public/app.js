@@ -8,11 +8,13 @@ let currentlyPlaying;
 const SAVE = {}
 
 const testSAVE = {
-  kick: [false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false],
+  kick: [false, true, false, true, false, true, false, false, false, false, false, false, false, false, false, false],
   snare: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
   hihat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
   openhat: [false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false]
 }
+
+
 
 function handleLoadButton(saveFile) {
   for (instrument in saveFile) {
@@ -36,6 +38,7 @@ function generatePattern() {
 
 function handleSaveButton() {
   let sequence = generatePattern();
+  // add event listener
 }
 
 function resetSelected() {
@@ -76,6 +79,9 @@ function togglePlay() {
     if ($('.playbutton').hasClass('hidden')) {
         console.log(bpmPerMilli);
         currentlyPlaying = setInterval(playSequencer, bpmPerMilli);
+
+        // could return out of the loop using new setinterval
+
     } else {
         clearInterval(currentlyPlaying);
     }
