@@ -23,13 +23,22 @@
             <p>Welcome to Drum Machine v0.1</p>
             <button class="js-intro button">Let's Go</button>
         </section> -->
-        <section class="controls">
+        <section class="controls" role="region">
             <p><span class="tempo"></span>bpm</p>
             <input type="range" min="30" max="240" id="tempo">
         </section>
         <section role="region" class="sequencer">
         </section>
+        <section class="save-controls" role="region">
+            <button class="save-button save-load">Save</button>
+            <button class="load-button save-load">Load</button>
+            <button class="share-button save-load">Share</button>
+            <p class="save-feedback hidden"></p>
+            <p class="share-feeback hidden">Successfully shared!</p>
+        </section>
+        <section class="load hidden"></section>
     </main>
+    
     <audio data-key="kick" src="sounds/boom.wav"></audio>
     <audio data-key="snare" src="sounds/snare.wav"></audio>
     <audio data-key="openhat" src="sounds/openhat.wav"></audio>

@@ -9,7 +9,7 @@ const {DATABASE_URL, PORT} = require('./config');
 app.use(express.static('public'));
 
 app.get('/patterns', function() {
-
+  
 });
 
 let server;
