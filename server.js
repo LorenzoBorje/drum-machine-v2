@@ -5,11 +5,30 @@ const mongoose = require('mongoose');
 const app = express();
 
 const {DATABASE_URL, PORT} = require('./config');
+const { Patterns } = require('./models');
 
 app.use(express.static('public'));
 
-app.get('/patterns', function() {
-  
+app.get('/patterns', (req, res) => {
+  Patterns
+    .find()
+    .then(patterns => {
+      res.json(patterns.map(pattern => pattern.serialize()));
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+app.get('/patterns/:id', (req, res) => {
+  Patterns
+    .findById(req.params.id)
+    .then(pattern => res.json(pattern.serialize()))
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
 let server;
