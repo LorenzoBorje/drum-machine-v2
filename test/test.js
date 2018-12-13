@@ -24,12 +24,23 @@ function seedBlogData() {
   return Patterns.insertMany(seedData);
 }
 
-function generatePattern() {
+
+
+function generateBooleanPattern() {
   let sequence = []
   for (let i = 0; i < 16; i++) {
     sequence.push(faker.random.boolean());
   }
   return sequence;
+}
+
+function generateDrumSequence() {
+  return {
+    kick: generateBooleanPattern(),
+    snare: generateBooleanPattern(),
+    hihat: generateBooleanPattern(),
+    openhat: generateBooleanPattern()
+  }
 }
 
 // generate blog data
@@ -38,12 +49,7 @@ function generatePatternData() {
   return {
     title: faker.lorem.slug(2),
     user: faker.name.firstName(),
-    pattern: {
-      kick: generatePattern(),
-      snare: generatePattern(),
-      hihat: generatePattern(),
-      openhat: generatePattern()
-    },
+    pattern: generateDrumSequence(),
     bpm: faker.random.number()
   }
 }
@@ -129,7 +135,6 @@ describe('drum machine endpoints', function() {
           return Patterns.findById(resPost.id);
         })
         .then(function(pattern) {
-          console.log(pattern.pattern);
           expect(resPost.id).to.equal(pattern.id);
           expect(resPost.title).to.equal(pattern.title);
           // expect(resPost.pattern).to.equal(pattern.pattern);
@@ -139,5 +144,41 @@ describe('drum machine endpoints', function() {
 
   });
 
+  describe('POST endpoint', function() {
+   
+    it('should add a new post', function() {
+      
+      const newPattern = {
+        user: faker.random.word(),
+        pattern: generateDrumSequence(),
+        bpm: faker.random.number()
+      }      
+      return chai.request(app)
+        .post('/patterns')
+        .send(newPattern)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.have.keys('id', 'title', 'pattern','created', 'user', 'bpm');
+        })
+    });
+
+    it('should verify all required fields are present', function() {
+      const newPattern = {
+        pattern: generateDrumSequence(),
+        bpm: faker.random.number()
+      }
+
+      return chai.request(app)
+        .post('/patterns')
+        .send(newPattern)
+        .then(function(res) {
+          expect(res).to.have.status(400);
+        });     
+    });
+
+
+  });
 
 });
