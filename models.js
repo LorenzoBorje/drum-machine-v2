@@ -1,11 +1,10 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const { BlogPost } = require('./models');
 mongoose.Promise = global.Promise;
 
 const patternSchema = mongoose.Schema({
-  author: {type: String},
+  user: {type: String},
   title: {type: String, required: true},
   public: {type: Boolean},
   pattern: {type: Object},
@@ -13,10 +12,10 @@ const patternSchema = mongoose.Schema({
   created: {type: Date, default: Date.now}
 });
 
-blogPostSchema.methods.serialize = function() {
+patternSchema.methods.serialize = function() {
   return {
     id: this._id,
-    author: this.author,
+    user: this.user,
     title: this.title,
     pattern: this.pattern,
     bpm: this.bpm,
