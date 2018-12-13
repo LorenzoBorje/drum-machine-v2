@@ -31,9 +31,9 @@ function generateLoadPatternGrid() {
        htmlString += `<div class="row load-pattern ${instruments[i]}">`;
       for (let j = 0; j < beatMeasure; j++) {
           if (dividers.includes(j)) {
-            htmlString += `<button class="beat ${j} divider" data-key="${instruments[i]}"></button>`;
+            htmlString += `<button class="beat divider" data-key="${instruments[i]}"></button>`;
           } else {
-            htmlString += `<button class="beat ${j} " data-key="${instruments[i]}"></button>`;
+            htmlString += `<button class="beat " data-key="${instruments[i]}"></button>`;
 
           }
        }
@@ -70,7 +70,7 @@ function generateSavePattern() {
 
 function handleSaveButton() {
   $('.save-button').click(event => {
-    console.log("save", SAVE);
+    console.log(SAVE);
   });
   // add event listener
 }
@@ -142,6 +142,7 @@ function handleBeatSelection() {
 function handleLabel() {
   $('.label').on('click', e => {
     let currentInstrument = $(event.currentTarget).attr('data-key');
+    playSound(currentInstrument);
   });
 }
 
@@ -173,6 +174,11 @@ function generateDrumSequencerGrid() {
     return htmlString;
 }
 
+function composeSequencer() {
+  $('.sequencer').empty();
+    $('.sequencer').append(generateDrumSequencerGrid);
+}
+
 function addEventListeners() {
   handleLabel();
   handleBeatSelection();
@@ -183,10 +189,6 @@ function addEventListeners() {
 
 }
 
-function composeSequencer() {
-  $('.sequencer').empty();
-    $('.sequencer').append(generateDrumSequencerGrid);
-}
 
 function handleStart() {
     composeSequencer();
