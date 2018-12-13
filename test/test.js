@@ -181,4 +181,22 @@ describe('drum machine endpoints', function() {
 
   });
 
+  describe('PUT endpoint', function() {
+    it('should update a pattern', function() {
+      
+      const updatePattern = generatePatternData();
+
+      return Patterns.findOne()
+      .then(function(post) {
+        updatePattern.id = post.id;
+        return chai.request(app)
+        .put(`/patterns/${updatePattern.id}`)
+        .send(updatePattern)
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        });
+      })
+    });
+  });
+
 });
