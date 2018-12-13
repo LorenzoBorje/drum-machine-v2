@@ -64,17 +64,50 @@ main {
   background-color: #CCC;
 }
 
-.divider {
- margin-right: 10px;
-}
 
-.selected {
-  background-color: #F39237;
-}
 
 .save-load {
   margin-right: 5px;
   text-transform: lowercase;
   font-weight: bold;
   display: inline;
+}
+
+.load {
+  margin-top: 50px;
+}
+article {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 920px;
+}
+
+.data {
+  font-size: 1
+}
+
+.pattern {
+  display: inline;
+}
+
+.pattern > .row > .beat {
+  width: 5px;
+  height: 5px;
+  margin-right: 1px;
+  background-color: #666;
+  border: none;
+}
+
+.row {
+  margin-bottom: -5px;
+}
+
+.divider {
+  margin-right: 10px;
+}
+ 
+.selected, .pattern > .row > .beat.selected {
+  background-color: #F39237;
 }

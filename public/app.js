@@ -5,16 +5,47 @@ const instruments = ['kick', 'snare', 'hihat', 'openhat'];
 let currentMeasure = 0;
 let currentlyPlaying;
 
-const SAVE = {}
+const SAVE = {};
+
 
 const testSAVE = {
-  kick: [false, true, false, true, false, true, false, false, false, false, false, false, false, false, false, false],
-  snare: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
-  hihat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
-  openhat: [false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false]
+  kick: [true, false, false, false, true, false, false, false, true, false, false, false, true, false, false,  false],
+  snare: [false, false, false, false, true, false, false, false, false, false, false, false, true, false, false,  false],
+  hihat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,  false],
+  openhat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,  false]
+}
+function renderLoadPatternGrid(save) {
+  for (instrument in save) {
+    save[instrument].forEach((beat, index) => {
+      if (beat) {
+        $(`.load-pattern.${instrument} > .beat:eq(${index})`).toggleClass('selected');
+      }
+    });
+  }
 }
 
+function generateLoadPatternGrid() {
+  let htmlString = '';
+  let dividers = [3, 7, 11];
+  for (let i = 0; i < instruments.length; i++) {
+       htmlString += `<div class="row load-pattern ${instruments[i]}">`;
+      for (let j = 0; j < beatMeasure; j++) {
+          if (dividers.includes(j)) {
+            htmlString += `<button class="beat ${j} divider" data-key="${instruments[i]}"></button>`;
+          } else {
+            htmlString += `<button class="beat ${j} " data-key="${instruments[i]}"></button>`;
 
+          }
+       }
+       htmlString += `</div>`
+  }
+  return htmlString;
+}
+
+function composeLoadPattern() {
+  $('.pattern').empty();
+  $('.pattern').append(generateLoadPatternGrid);
+}
 
 function handleLoadButton(saveFile) {
   for (instrument in saveFile) {
@@ -26,7 +57,7 @@ function handleLoadButton(saveFile) {
   }
 }
 
-function generatePattern() {
+function generateSavePattern() {
   instruments.forEach(instrument => {
     let pattern = [];
     for (let i = 0; i < beatMeasure; i++) {
@@ -34,10 +65,13 @@ function generatePattern() {
     };
     SAVE[instrument] = pattern; 
   });
+  return SAVE;
 }
 
 function handleSaveButton() {
-  let sequence = generatePattern();
+  $('.save-button').click(event => {
+    console.log("save", SAVE);
+  });
   // add event listener
 }
 
@@ -49,20 +83,17 @@ function handleReset() {
     $('.resetbutton').click(resetSelected);
 }
 
-function playBeat(instrument) {
-    console.log(`hit ${instrument}`);
-    // resets currentTime so when other buttons are clicked it can start immediately playing
-    $(`audio[data-key='${instrument}']`)[0].currentTime = 0;
-    $(`audio[data-key='${instrument}']`)[0].play()
+function playSound(currentInstrument) {
+  $(`audio[data-key="${currentInstrument}"]`)[0].currentTime = 0;
+  $(`audio[data-key="${currentInstrument}"]`)[0].play();
 }
 
 function playSequencer() {
     if (currentMeasure == 16) currentMeasure = 0;
-    console.log(currentMeasure);
     for (let i = 0; i < $(`.${currentMeasure}`).length; i++){
         if ($(`.${currentMeasure}:eq(${i})`).hasClass('selected')) {
             currentInstrument = $(`.${currentMeasure}:eq(${i})`).attr('data-key');
-            playBeat(currentInstrument);
+            playSound(currentInstrument);
 
         }
     }
@@ -77,11 +108,7 @@ function switchPlayButton() {
 function togglePlay() {
     switchPlayButton();
     if ($('.playbutton').hasClass('hidden')) {
-        console.log(bpmPerMilli);
         currentlyPlaying = setInterval(playSequencer, bpmPerMilli);
-
-        // could return out of the loop using new setinterval
-
     } else {
         clearInterval(currentlyPlaying);
     }
@@ -91,10 +118,7 @@ function handlePlayButton(){
     $('.playbutton, .stopbutton').click(togglePlay);
 }
 
-function playSound(currentInstrument) {
-  $(`audio[data-key="${currentInstrument}"]`)[0].currentTime = 0;
-  $(`audio[data-key="${currentInstrument}"]`)[0].play();
-}
+
 
 function handleBeatSelection() { 
   $('.pad').on('click', e => {
@@ -112,14 +136,12 @@ function handleBeatSelection() {
     } else {
       SAVE[currentInstrument][padIndex] = false;
     }
-    console.log(SAVE);
   });
 }
 
 function handleLabel() {
   $('.label').on('click', e => {
     let currentInstrument = $(event.currentTarget).attr('data-key');
-    playSound(currentInstrument);
   });
 }
 
@@ -151,19 +173,27 @@ function generateDrumSequencerGrid() {
     return htmlString;
 }
 
-function composeSequencer(){
-    $('.sequencer').empty();
+function addEventListeners() {
+  handleLabel();
+  handleBeatSelection();
+  handlePlayButton();
+  handleTempoSelection();
+  handleReset();
+  handleSaveButton();
+
+}
+
+function composeSequencer() {
+  $('.sequencer').empty();
     $('.sequencer').append(generateDrumSequencerGrid);
 }
 
 function handleStart() {
     composeSequencer();
-    handleLabel();
-    handleBeatSelection();
-    handlePlayButton();
-    handleTempoSelection();
-    handleReset();
-    handleSaveButton();
+    generateSavePattern();
+    addEventListeners();
+    composeLoadPattern();
+    renderLoadPatternGrid(testSAVE);
     handleLoadButton(testSAVE);
 }
 
