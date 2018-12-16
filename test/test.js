@@ -197,6 +197,23 @@ describe('drum machine endpoints', function() {
         });
       })
     });
+
+  });
+
+  describe('DELETE endpoint', function() {
+    it('should delete a post', function() {
+      let id;
+
+      return Patterns.findOne()
+        .then(function(pattern) {
+          id = pattern.id;
+          return chai.request(app)
+          .delete(`/patterns/${id}`)
+          .then(function(res) {
+            expect(res).to.have.status(204);
+          })
+        });
+    });
   });
 
 });

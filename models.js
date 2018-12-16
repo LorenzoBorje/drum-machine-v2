@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const patternSchema = mongoose.Schema({
-  user: {type: String},
+  user: {type: String, required: true},
   title: {type: String, required: true},
   public: {type: Boolean},
-  pattern: {type: Object},
+  pattern: {type: Object, required},
   bpm: {type: Number},
   created: {type: Date, default: Date.now}
 });

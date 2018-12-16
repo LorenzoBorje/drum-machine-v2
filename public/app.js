@@ -47,7 +47,19 @@ function composeLoadPattern() {
   $('.pattern').append(generateLoadPatternGrid);
 }
 
-function handleLoadButton(saveFile) {
+function renderLoadData() {
+  console.log(responseJson);
+}
+
+function handleLoadButton() {
+  $('.load-button').click(event => {
+    fetch('/patterns')
+    .then(response => response.json())
+    .then(responseJson => console.log(responseJson));
+  });
+}
+
+function renderLoadedPattern(saveFile) {
   for (instrument in saveFile) {
     saveFile[instrument].forEach((pad, index) => {
       if (pad) {
@@ -68,9 +80,33 @@ function generateSavePattern() {
   return SAVE;
 }
 
+function callSaveEndpoint(saveFile) {
+  // $.post('/patterns', {user: "test", bpm: 110, pattern: testSAVE}
+  // .done(function(data) {
+  //   console.log(data);
+  // });
+  // })
+ 
+  fetch('/patterns', {
+    method: 'POST', // or 'PUT'
+    body: JSON.stringify({
+      user: 'test',
+      bpm: bpm,
+      pattern: saveFile
+    }), // data can be `string` or {object}!
+    headers:{
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(responseJson => console.log(responseJson));
+
+}
 function handleSaveButton() {
   $('.save-button').click(event => {
     console.log(SAVE);
+    callSaveEndpoint();
   });
   // add event listener
 }
@@ -195,6 +231,7 @@ function handleStart() {
     generateSavePattern();
     addEventListeners();
     composeLoadPattern();
+    renderLoadedPattern(testSAVE);
     renderLoadPatternGrid(testSAVE);
     handleLoadButton(testSAVE);
 }

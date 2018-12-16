@@ -40,6 +40,7 @@ app.get('/patterns/:id', (req, res) => {
 app.post('/patterns', (req, res) => {
   
   const requiredFields = ['pattern', 'user', 'bpm'];
+  console.log(req.body);
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -59,7 +60,7 @@ app.post('/patterns', (req, res) => {
     .then(pattern => res.status(201).json(pattern.serialize()))
     .catch(err => {
       console.error(err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ error: 'Internal server error' });
     });
 
 });
@@ -83,6 +84,19 @@ app.put('/patterns/:id', (req, res) => {
     .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
     .then(updatedPost => res.status(204).end())
     .catch(err => res.status(500).json({ message: 'Something went wrong' }));
+});
+
+app.delete('/patterns/:id', (req, res) => {
+  Patterns
+    .findByIdAndRemove(req.params.id)
+    .then(() => {
+      console.log(`Deleted pattern with id ${req.params.id}`);
+      res.status(204).end();
+    })
+    .catch(err => {
+      console.error(err);
+
+    })
 });
 
 let server;
