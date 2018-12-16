@@ -168,9 +168,11 @@ function handleBeatSelection() {
     // better solutions exist (see: StackOverflow) but for first iteration this is fine
     if ($(event.currentTarget).hasClass('selected')) {
       SAVE[currentInstrument][padIndex] = true;
+      console.log(SAVE);
       playSound(currentInstrument);
     } else {
       SAVE[currentInstrument][padIndex] = false;
+      console.log(SAVE);
     }
   });
 }
