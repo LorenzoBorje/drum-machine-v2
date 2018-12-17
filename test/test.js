@@ -121,7 +121,7 @@ describe('drum machine endpoints', function() {
 
           res.body.forEach(function(pattern) {
             expect(pattern).to.be.a('object');
-            expect(pattern).to.have.keys('id', 'title', 'pattern','created', 'user', 'bpm');
+            expect(pattern).to.have.keys('id', 'title', 'pattern','created', 'user', 'bpm', 'modified');
           });
         });
 ````});
@@ -160,7 +160,7 @@ describe('drum machine endpoints', function() {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
-          expect(res.body).to.have.keys('id', 'title', 'pattern','created', 'user', 'bpm');
+          expect(res.body).to.have.keys('id', 'title', 'pattern','created', 'user', 'bpm', 'modified');
         })
     });
 
