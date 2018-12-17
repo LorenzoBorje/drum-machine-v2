@@ -7,15 +7,21 @@ let currentlyPlaying;
 let saved = false;
 let id = '';
 
-let SAVE = {};
-
-
-const testSAVE = {
-  kick: [true, false, false, false, true, false, false, false, true, false, false, false, true, false, false,  false],
-  snare: [false, false, false, false, true, false, false, false, false, false, false, false, true, false, false,  false],
-  hihat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,  false],
-  openhat: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,  false]
+const CONFIG = {
+  beatMeasure: 16,
+  bpm: 110,
+  bpmPerMilli: (15000/bpm),
+  instruments: ['kick', 'snare', 'hihat', 'openhat'],
+  currentMeasure: 0,
+  currentlyPlaying: false,
+  saved: false,
+  id: '',
+  user: '',
+  title: '',
+  SAVE: '',
 }
+
+let SAVE = {};
 
 function handleLoadPatternButton() {
   $('.load-pattern-button').click(event => {

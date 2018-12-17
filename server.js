@@ -4,15 +4,27 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const faker = require('faker');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const {DATABASE_URL, PORT} = require('./config');
 const { Patterns } = require('./models');
 
 const app = express();
 
+require('./auth/auth');
+
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(express.json());
+app.use( bodyParser.urlencoded({ extended : false }) );
+
+const routes = require('./users/router');
+const secureRoute = require('./routes/secure-routes');
+
+app.use('/', routes);
+app.use('/user', passport.authenticate('jwt', { session : false }), secureRoute );
+
 
 
 app.get('/patterns', (req, res) => {
