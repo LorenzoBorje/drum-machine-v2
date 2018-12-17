@@ -18,6 +18,7 @@ app.use(express.json());
 app.get('/patterns', (req, res) => {
   Patterns
     .find()
+    .sort({created: 'desc'})
     .then(patterns => {
       res.json(patterns.map(pattern => pattern.serialize()));
     })

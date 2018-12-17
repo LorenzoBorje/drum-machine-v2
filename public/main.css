@@ -78,12 +78,14 @@ main {
 .load {
   margin-top: 50px;
 }
+
 article {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
   width: 920px;
+  margin-bottom: 50px;
 }
 
 .data {
@@ -112,4 +114,9 @@ article {
  
 .selected, .pattern > .row > .beat.selected {
   background-color: #F39237;
+}
+
+.title {
+  width: 75px;
+  word-wrap: break-word;
 }
