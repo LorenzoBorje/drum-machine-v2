@@ -6,6 +6,9 @@ const { JWT_SECRET } = require('../config');
 
 const router = express.Router();
 
+require('dotenv').config()
+
+
 router.post('/signup', passport.authenticate('signup', { session : false }) , async (req, res, next) => {
   res.json({ 
     message : 'Signup successful',
@@ -25,7 +28,7 @@ router.post('/login', async (req, res, next) => {
         //user password in the token so we pick only the email and id
         const body = { _id : user._id, user: user.userName };
         //Sign the JWT token and populate the payload with the user email and id
-        const token = jwt.sign({ user : body }, 'test');
+        const token = jwt.sign({ user : body }, );
         //Send back the token to the user
         return res.json({ token });
       });     } catch (error) {

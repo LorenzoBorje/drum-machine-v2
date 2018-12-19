@@ -19,9 +19,12 @@ const CONFIG = {
   user: '',
   title: '',
   SAVE: '',
+  token: ''
 }
 
 let SAVE = {};
+
+// 
 
 function handleLoadPatternButton() {
   $('.load-pattern-button').click(event => {
@@ -237,8 +240,6 @@ function handlePlayButton(){
     $('.playbutton, .stopbutton').click(togglePlay);
 }
 
-
-
 function handleBeatSelection() { 
   $('.pad').on('click', e => {
     let pad = $(event.currentTarget);
@@ -298,7 +299,26 @@ function composeSequencer() {
     $('.sequencer').append(generateDrumSequencerGrid);
 }
 
+function callUserEndpoint(action) {
+  if (action == signup) {
+
+  }
+
+}
+
+function handleFormSubmit() {
+  $('form').submit(event => {
+    if (event.currentTarget) {
+      // sign up
+      callUserEndpoint(signup)
+    } else {
+      // log in
+    }
+  })
+}
+
 function addEventListeners() {
+  handleFormSubmit();
   handleLabel();
   handleBeatSelection();
   handlePlayButton();

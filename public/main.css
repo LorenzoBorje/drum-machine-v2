@@ -27,6 +27,11 @@ header > button {
   top: -5px;
 }
 
+.controls {
+  margin-bottom: 10px;
+  text-transform: lowercase;
+}
+
 .controls > * {
   display: inline;
 }
