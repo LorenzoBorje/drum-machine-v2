@@ -1,13 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-
-const { JWT_SECRET } = require('../config');
-
 const router = express.Router();
 
 require('dotenv').config()
 
+const secret = process.env.JWT_SECRET;
 
 router.post('/signup', passport.authenticate('signup', { session : false }) , async (req, res, next) => {
   res.json({ 
