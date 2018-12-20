@@ -10,42 +10,42 @@
 </head>
 <body>
     <header>
-        <h1>Drum Machine</h1>
-        <section class="log-in" role="region">
-            <form id="log-in">
-                <input type="text" placeholder="user name" id="user-name">
-                <input type="password" placeholder="password" id="pass-word">
-                <button type="submit">Log In</button>
-                <button>Register</button>
+        <section class="intro sidenav" role="region">
+            <p><a class="close-intro">close</a></p>
+            <h1>Upbeat <span>v2</span></h1>
+            <p>Welcome to Upbeat, a web-based drum sequencer.</p>
+            <p>Click on the pads to toggle beat selection.</p>
+            <p>Save and load patterns that you've created.</p>
+            <p>Share your beats with the community.</p>
+            <form id="log-in" autocomplete="off">
+                <input placeholder="username" style="display:none">
+                <input type="password" style="display:none">
+                <input type="text" placeholder="username" id="user-name" autocomplete="nope"><br>
+                <input type="password" placeholder="password" id="pass-word" autocomplete="nope"><br>
+                <button id="log-in-button" class="save-load">Log In</button>
+                <button id="register-button" class="save-load">Register</button>
             </form>
         </section>
     </header>
     <main>
-        <!-- <section class="intro">
-            <p>Welcome to Drum Machine v0.1</p>
-            <button class="js-intro button">Let's Go</button>
-        </section> -->
-        <!-- <section class="controls" role="region">
-            <p><span class="tempo"></span>bpm</p>
-            <input type="range" min="30" max="240" id="tempo">
-        </section> -->
-        <section role="region" class=""></section>
-        <section role="region" class="controls">
-            <button class="playbutton">Play</button>
-            <button class="stopbutton hidden">Stop</button>
-            <button class="resetbutton">Reset</button>
-            <input class="tempo" type="number" min="30" max="240" id="tempo"> <span>bpm</span>
-        </section>
-        <section role="region" class="sequencer">
-        </section>
-        <section class="save-controls" role="region">
-            <button class="save-button save-load">Save</button>
-            <button class="load-button save-load">Load</button>
-            <button class="share-button save-load">Share</button>
-            <p class="save-feedback hidden"></p>
-            <p class="share-feeback hidden">Successfully shared!</p>
-        </section>
-        <section class="load ">
+        <section role="region" class="machine">
+            <section role="region" class="playback-controls">
+                <button class="playbutton">Play</button>
+                <button class="stopbutton hidden">Stop</button>
+                <button class="resetbutton">Reset</button>
+                <input class="tempo" type="number" min="30" max="240" id="tempo"> <span>bpm</span>
+            </section>
+            <section role="region" class="sequencer">
+            </section>
+            <section class="save-controls" role="region">
+                <button class="save-button save-load">Save</button>
+                <button class="load-button save-load">Load</button>
+                <button class="share-button save-load">Share</button>
+                <p class="save-feedback hidden"></p>
+                <p class="share-feeback hidden">Successfully shared!</p>
+            </section>
+            <section class="load ">
+            </section>
         </section>
     </main>
     

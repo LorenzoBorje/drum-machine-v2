@@ -167,7 +167,7 @@ function callSaveEndpoint(saveFile) {
   fetch('/patterns', {
     method: 'POST',
     body: JSON.stringify({
-      user: 'test',
+      user: CONFIG.user,
       bpm: bpm,
       pattern: saveFile
     }),
@@ -268,6 +268,7 @@ function handleLabel() {
 }
 
 function handleTempoSelection() {
+  $('#tempo').val("110");
   $('#tempo').on('input', e => {
     let setTempo = $('#tempo').val();
     console.log(setTempo)
@@ -299,26 +300,82 @@ function composeSequencer() {
     $('.sequencer').append(generateDrumSequencerGrid);
 }
 
-function callUserEndpoint(action) {
-  if (action == signup) {
-
-  }
-
+function setTokenAndUser(responseJson, user){
+  CONFIG.token = responseJson.token;
+  CONFIG.user = user.userName;
 }
 
-function handleFormSubmit() {
-  $('form').submit(event => {
-    if (event.currentTarget) {
-      // sign up
-      callUserEndpoint(signup)
-    } else {
-      // log in
+function callLoginEndpoint(user) {
+  fetch('/login', {
+    method: 'POST',
+    body: JSON.stringify({
+      userName: user.userName,
+      password: user.password
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     }
+  })
+  .then(response => response.json())
+  .then(responseJson => setTokenAndUser(responseJson, user))
+  .then(() => closeSideNav())
+  .catch(err => console.error(err));
+}
+
+function callSignUpEndpoint(user) {
+  fetch('/signup', {
+    method: 'POST',
+    body: JSON.stringify({
+      userName: user.userName,
+      password: user.password
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => callLoginEndpoint(user));
+}
+
+function handleSignUp() {
+  $('#register-button').click(event => {
+    event.preventDefault();
+    console.log('register');
+    let userName = $('#user-name').val();
+    let password = $('#pass-word').val();
+    let user = {userName: userName, password: password};
+    callSignUpEndpoint(user);
   })
 }
 
+function handleLogIn() {
+  $('#log-in-button').click(event => {
+    event.preventDefault();
+    let userName = $('#user-name').val();
+    let password = $('#pass-word').val();
+    let user = {userName: userName, password: password};
+    callLoginEndpoint(user);
+  })
+}
+
+function openSideNav() {
+  $(".sidenav").width(350);
+  $("main").css('margin-left', '390px');
+  $(".sidenav").css('padding', '20px');
+}
+
+function closeSideNav() {
+  $(".sidenav").width(0);
+  $("main").css('margin-left', '0');
+  $(".sidenav").css('padding', '0');
+
+}
+
+
 function addEventListeners() {
-  handleFormSubmit();
+  handleSignUp();
+  handleLogIn();
   handleLabel();
   handleBeatSelection();
   handlePlayButton();
@@ -334,6 +391,7 @@ function handleStart() {
     composeSequencer();
     generateSavePattern();
     addEventListeners();
+    openSideNav();
 }
 
 $(handleStart);

@@ -1,7 +1,6 @@
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const { Users } = require('../models');
-const { JWT_SECRET } = require('../config');
 
 require('dotenv').config()
 

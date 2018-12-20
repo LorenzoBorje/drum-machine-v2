@@ -1,38 +1,52 @@
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 body {
   background-color: #2A2D34;
   color: #FFF;
   font-family: 'DIN', sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 .hidden {
   display: none;  
 }
 
-header {
+.intro > p > a {
+  float: right;
+  margin-bottom: 20px;
+}
+
+.sidenav {
+  height: 100%; 
+  text-align: center;
+  width: 0px;  
+  position: fixed; 
+  z-index: 1; 
+  top: 0; 
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s; 
+}
+
+form > input {
+  width: 200px;
+  height: 30px;
   margin: 0 auto;
-  margin-bottom: 50px;
-  width: 920px;
+  display: block;
 }
 
-header > * {
-  display: inline;
-}
 
-header > button {
-  position: relative;
-  top: -5px;
-}
-
-.controls {
+.playback-controls {
   margin-bottom: 10px;
   text-transform: lowercase;
 }
 
-.controls > * {
+.playback-controls > * {
   display: inline;
 }
 
@@ -40,9 +54,15 @@ header > button {
 main {
   margin: 0 auto;
   width: 80%;
+  transition: margin-left .5s;
+  padding: 20px;
 }
 
-.label, .save-load, .controls > * {
+.machine {
+  margin-top: 100px;
+}
+
+.label, .save-load, .playback-controls > * {
   width: 75px;
   height: 50px;
   margin-right: 7px;
@@ -65,7 +85,7 @@ main {
 }
 
 .pad:focus {
-  background-color: #F39237;
+  background-color: #AAA;
 }
 
 .pad:hover {
