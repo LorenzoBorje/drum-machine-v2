@@ -1,38 +1,27 @@
-'use strict'
-
 const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const faker = require('faker');
-const bodyParser = require('body-parser');
-const passport = require('passport');
-const cors = require('cors');
-const {DATABASE_URL, PORT} = require('./config');
-const { Patterns } = require('./models');
 
-const app = express();
+const router = express.Router();
 
-require('./auth/auth');
+const { Patterns } = require('../models');
 
-app.use(express.static('public'));
-app.use(morgan('common'));
-app.use(express.json());
-app.use( bodyParser.urlencoded({ extended : false }) );
-app.use(cors());
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+router.get('/:user/patterns', (req, res) => {
+  let user = req.params.user;
+  console.log(user);
+  Patterns
+    .find({'user': user})
+    .sort({created: 'desc'})
+    .then(patterns => {
+      res.json(patterns.map(pattern => pattern.serialize()));
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
-const routes = require('./users/router');
-const secureRoute = require('./patterns/router');
 
-app.use('/', routes);
-app.use('/user', passport.authenticate('jwt', { session : false }), secureRoute );
-
-app.get('/patterns', (req, res) => {
+router.get('/patterns', (req, res) => {
   Patterns
     .find()
     .sort({created: 'desc'})
@@ -45,7 +34,7 @@ app.get('/patterns', (req, res) => {
     });
 });
 
-app.get('/patterns/:id', (req, res) => {
+router.get('/patterns/:id', (req, res) => {
   Patterns
     .findById(req.params.id)
     .then(pattern => res.json(pattern.serialize()))
@@ -55,7 +44,7 @@ app.get('/patterns/:id', (req, res) => {
     });
 });
 
-app.post('/patterns', (req, res) => {
+router.post('/patterns', (req, res) => {
   
   const requiredFields = ['pattern', 'user', 'bpm'];
   console.log(req.body);
@@ -83,7 +72,7 @@ app.post('/patterns', (req, res) => {
 
 });
 
-app.put('/patterns/:id', (req, res) => {
+router.put('/patterns/:id', (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
@@ -104,7 +93,7 @@ app.put('/patterns/:id', (req, res) => {
     .catch(err => res.status(500).json({ message: 'Something went wrong' }));
 });
 
-app.delete('/patterns/:id', (req, res) => {
+router.delete('/patterns/:id', (req, res) => {
   Patterns
     .findByIdAndRemove(req.params.id)
     .then(() => {
@@ -117,43 +106,4 @@ app.delete('/patterns/:id', (req, res) => {
     })
 });
 
-let server;
-
-
-function runServer(databaseUrl, port = PORT) {
-  return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, err => {
-      if (err) {
-        return reject(err);
-      }
-      server = app.listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
-        resolve();
-      })
-        .on('error', err => {
-          mongoose.disconnect();
-          reject(err);
-        });
-    });
-  });
-}
-
-function closeServer() {
-  return mongoose.disconnect().then(() => {
-    return new Promise((resolve, reject) => {
-      console.log('Closing server');
-      server.close(err => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
-  });
-}
-
-if (require.main === module) {
-  runServer(DATABASE_URL).catch(err => console.error(err));
-}
-
-module.exports = { app, runServer, closeServer };
+module.exports = router;

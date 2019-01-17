@@ -1,4 +1,3 @@
-const beatMeasure = 16;
 let bpm = 110;
 let bpmPerMilli = (15000/bpm);
 const instruments = ['kick', 'snare', 'hihat', 'openhat'];
@@ -10,7 +9,7 @@ let id = '';
 const CONFIG = {
   beatMeasure: 16,
   bpm: 110,
-  bpmPerMilli: (15000/bpm),
+  bpmPerMilli: (15000/this.bpm),
   instruments: ['kick', 'snare', 'hihat', 'openhat'],
   currentMeasure: 0,
   currentlyPlaying: false,
@@ -39,7 +38,7 @@ function generateLoadPatternGrid(pattern) {
   let htmlString = '';
   for (instrument in pattern) {
     htmlString += `<div class="row load-pattern ${instrument}">`;
-    for (let i = 0; i < beatMeasure; i++) {
+    for (let i = 0; i < CONFIG.beatMeasure; i++) {
       if (pattern[instrument][i]) {
   
         htmlString += `<button class="beat selected" data-key="${instruments[i]}"></button>`;
@@ -102,12 +101,22 @@ function callDeleteEndpoint(patternID) {
 }
 
 function callLoadEndpoint(patternID) {
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Origin': '',
+      'Host': 'api.producthunt.com',
+      'Authorization': CONFIG.token
+    }
+  };
   if (patternID) {
-    fetch(`/patterns/${patternID}`)
+    fetch(`/user/patterns/${patternID}`, options)
     .then(response => response.json())
     .then(responseJson => renderLoadedPattern(responseJson));
   } else {
-    fetch('/patterns')
+    fetch(`/user/${CONFIG.user}/patterns`, options)
     .then(response => response.json())
     .then(responseJson => renderLoadData(responseJson))
     .then(() => {
@@ -126,7 +135,7 @@ function handleLoadButton() {
 function generateSavePattern() {
   instruments.forEach(instrument => {
     let pattern = [];
-    for (let i = 0; i < beatMeasure; i++) {
+    for (let i = 0; i < CONFIG.beatMeasure; i++) {
       pattern.push(false);
     };
     SAVE[instrument] = pattern; 
@@ -134,7 +143,7 @@ function generateSavePattern() {
   return SAVE;
 }
 
-function callUpdateEndpoint(saveFile) {
+function callUpdateEndpoint(saveFile, public) {
   fetch(`/patterns/${id}`, {
     method: 'PUT',
     body: JSON.stringify({
@@ -148,6 +157,7 @@ function callUpdateEndpoint(saveFile) {
     }
   })
   .then(response => console.log('Successfully updated'))
+  .then(() => callLoadEndpoint())
   .catch(err => {
     console.error(err);
     console.error('Internal server error');
@@ -155,11 +165,12 @@ function callUpdateEndpoint(saveFile) {
 }
 
 function updatePatternInfo(responseJson) {
+  let feedback = $('.save-feedback');
   saved = true;
   id = responseJson.id;
-  $('.save-feedback').append(`Saved successfully as ${responseJson.title} ${responseJson.id}`)
-  console.log(responseJson.id);
-  $('.save-feedback').removeClass('hidden');
+  feedback.empty();
+  feedback.append(`Saved successfully as ${responseJson.title}`)
+  feedback.removeClass('hidden');
 }
 
 function callSaveEndpoint(saveFile) {
@@ -179,7 +190,7 @@ function callSaveEndpoint(saveFile) {
     .then(response => response.json())
     .then(responseJson => updatePatternInfo(responseJson))
     .then(() => callLoadEndpoint())
-    .catch(err => console.err('Save failed.'))
+    .catch(err => console.error('Save failed.'))
 
 }
 function handleSaveButton() {
@@ -251,11 +262,9 @@ function handleBeatSelection() {
     // chaining buttons heightens pitch, odd side-effect
     if ($(event.currentTarget).hasClass('selected')) {
       SAVE[currentInstrument][padIndex] = true;
-      console.log(SAVE);
       playSound(currentInstrument);
     } else {
       SAVE[currentInstrument][padIndex] = false;
-      console.log(SAVE);
     }
   });
 }
@@ -271,7 +280,6 @@ function handleTempoSelection() {
   $('#tempo').val("110");
   $('#tempo').on('input', e => {
     let setTempo = $('#tempo').val();
-    console.log(setTempo)
     bpm = setTempo;
     bpmPerMilli = 15000/bpm;
   })
@@ -282,7 +290,7 @@ function generateDrumSequencerGrid() {
     let dividers = [3, 7, 11];
     for (let i = 0; i < instruments.length; i++) {
          htmlString += `<div class="row instrument ${instruments[i]}"><button class="label divider" data-key="${instruments[i]}">${instruments[i]}</button>`;
-        for (let j = 0; j < beatMeasure; j++) {
+        for (let j = 0; j < CONFIG.beatMeasure; j++) {
             if (dividers.includes(j)) {
               htmlString += `<button class="pad ${j} divider" data-key="${instruments[i]}"></button>`;
             } else {
@@ -338,10 +346,17 @@ function callSignUpEndpoint(user) {
   .then(response => callLoginEndpoint(user));
 }
 
+function handleShareButton() {
+  $('.share-button').click(event => {
+    if (saved) {
+      callUpdateEndpoint
+    }
+  })
+}
+
 function handleSignUp() {
   $('#register-button').click(event => {
     event.preventDefault();
-    console.log('register');
     let userName = $('#user-name').val();
     let password = $('#pass-word').val();
     let user = {userName: userName, password: password};
@@ -383,7 +398,7 @@ function addEventListeners() {
   handleLoadButton();
   handleReset();
   handleSaveButton();
-
+  handleShareButton();
 }
 
 

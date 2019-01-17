@@ -38,8 +38,12 @@ form > input {
   height: 30px;
   margin: 0 auto;
   display: block;
+  text-align: center;
 }
 
+.tempo {
+  text-align: center;
+}
 
 .playback-controls {
   margin-bottom: 10px;

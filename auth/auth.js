@@ -40,12 +40,14 @@ passport.use('login', new localStrategy({
 
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
+console.log(ExtractJWT);
 
 passport.use(new JWTstrategy({
   secretOrKey : secret,
-  jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
+  jwtFromRequest : ExtractJWT.fromHeader('authorization')
 }, async (token, done) => {
   try {
+    console.log(token);
     return done(null, token.user);
   } catch (error) {
     done(error);
