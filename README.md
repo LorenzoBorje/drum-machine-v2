@@ -4,7 +4,7 @@
 
 ## Summary
 
-A simple drum sequencer built in Node.js, featuring a RESTful API w/ CRUD operations to save, update and retrieve created drum patterns.
+A simple drum sequencer built in Node.js, featuring a RESTful API w/ CRUD operations to save, update and retrieve created drum patterns. Toggle beats by selecting drum pads, and change the speed with the tempo controls.
 
 ## Technologies
 
